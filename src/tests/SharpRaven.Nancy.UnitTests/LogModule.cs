@@ -28,9 +28,8 @@
 
 #endregion
 
-using System.Net.Http;
-
 using Nancy;
+
 #pragma warning disable 618
 
 namespace SharpRaven.Nancy.UnitTests
@@ -45,22 +44,26 @@ namespace SharpRaven.Nancy.UnitTests
                 return View["log.html", new { MessageId = messageId }];
             };
 
-            Get["/log-async", runAsync : true] = async (_, token) =>
-            {
-                var httpClient = new HttpClient();
-                var response = await httpClient.GetAsync("http://www.google.com").ConfigureAwait(false);
+            Get["/log-async",
+#if !net35
+                true
+#else
+                false
+#endif
+                ] =
+#if !net35
+                async
+#endif
+                    (_, token) =>
+                    {
+#if !net40 && !net35
+                        var messageId = await ravenClient.CaptureMessageAsync("Hello world!!!").ConfigureAwait(false);
+#else
+                        var messageId = ravenClient.CaptureMessage("Hello world!!!");
+#endif
 
-                response.EnsureSuccessStatusCode();
-
-                var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                #if (!net40) && (!net35)
-                var messageId = await ravenClient.CaptureMessageAsync("Hello world!!!").ConfigureAwait(false);
-                #else
-                var messageId = ravenClient.CaptureMessage("Hello world!!!");
-                #endif
-
-                return View["log.html", new { MessageId = messageId }];
-            };
+                        return View["log.html", new { MessageId = messageId }];
+                    };
         }
     }
 }

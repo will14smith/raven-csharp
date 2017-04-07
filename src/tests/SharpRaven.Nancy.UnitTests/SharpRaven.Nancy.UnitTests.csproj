@@ -24,6 +24,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug 4.0|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -34,6 +35,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release 4.5|AnyCPU'">
     <OutputPath>bin\Release\net45\</OutputPath>
@@ -44,6 +46,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug 4.5|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -61,6 +64,7 @@
     <DefineConstants>TRACE;DEBUG;net35</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
@@ -71,11 +75,12 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' != 'Debug 3.5' And '$(Configuration)' != 'Release 3.5'">
     <Reference Include="CsQuery, Version=1.3.3.249, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\CsQuery.1.3.4\lib\net40\CsQuery.dll</HintPath>
@@ -93,7 +98,13 @@
       <HintPath>..\..\packages\Nancy.Testing.1.4.1\lib\net40\Nancy.Testing.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NSubstitute">
+    <Reference Include="NSubstitute" Condition="$(Configuration) == 'Release 3.5' Or $(Configuration) == 'Debug 3.5'">
+      <HintPath>..\..\packages\NSubstitute.1.8.0.0\lib\net35\NSubstitute.dll</HintPath>
+    </Reference>
+    <Reference Include="NSubstitute" Condition="$(Configuration) == 'Release 4.0' Or $(Configuration) == 'Debug 4.0'">
+      <HintPath>..\..\packages\NSubstitute.1.8.0.0\lib\net40\NSubstitute.dll</HintPath>
+    </Reference>
+    <Reference Include="NSubstitute" Condition="$(Configuration) == 'Release 4.5' Or $(Configuration) == 'Debug 4.5'">
       <HintPath>..\..\packages\NSubstitute.1.8.0.0\lib\net45\NSubstitute.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
@@ -105,7 +116,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' != 'Debug 3.5' And '$(Configuration)' != 'Release 3.5'">
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
@@ -120,7 +131,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' != 'Debug 3.5' And '$(Configuration)' != 'Release 3.5'">
     <Content Include="log.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -131,7 +142,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' != 'Debug 3.5' And '$(Configuration)' != 'Release 3.5'">
     <ProjectReference Include="..\..\app\SharpRaven.Nancy\SharpRaven.Nancy.csproj">
       <Project>{abe22746-6eeb-4970-a608-c02bc3b8bda3}</Project>
       <Name>SharpRaven.Nancy</Name>
@@ -141,7 +152,7 @@
       <Name>SharpRaven</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' != 'Debug 3.5' And '$(Configuration)' != 'Release 3.5'">
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -152,7 +163,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\GitVersionTask.3.4.1\Build\portable-net+sl+win+wpa+wp\GitVersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\GitVersionTask.3.4.1\Build\portable-net+sl+win+wpa+wp\GitVersionTask.targets'))" />
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

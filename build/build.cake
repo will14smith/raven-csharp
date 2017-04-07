@@ -1,7 +1,4 @@
-#!../src/packages/Cake.0.8.0/Cake.exe
-
 var target = Argument("target", "Default");
-
 
 Task("Clean")
     .Does(() =>
@@ -27,6 +24,9 @@ Task("Build")
     {
       // Use MSBuild
       MSBuild("../src/SharpRaven.sln", settings =>
+        settings.SetConfiguration("Release 3.5"));
+
+      MSBuild("../src/SharpRaven.sln", settings =>
         settings.SetConfiguration("Release 4.0"));
 
       MSBuild("../src/SharpRaven.sln", settings =>
@@ -35,6 +35,9 @@ Task("Build")
     else
     {
       // Use XBuild
+      XBuild("../src/SharpRaven.sln", settings =>
+        settings.SetConfiguration("Release 3.5"));
+
       XBuild("../src/SharpRaven.sln", settings =>
         settings.SetConfiguration("Release 4.0"));
 
