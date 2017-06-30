@@ -28,6 +28,8 @@
 
 #endregion
 
+#if !net35
+
 using System;
 
 using Nancy;
@@ -38,6 +40,8 @@ using NSubstitute;
 using NUnit.Framework;
 
 using SharpRaven.Data;
+
+#pragma warning disable 618
 
 namespace SharpRaven.Nancy.UnitTests
 {
@@ -195,3 +199,5 @@ namespace SharpRaven.Nancy.UnitTests
         }
     }
 }
+
+#endif

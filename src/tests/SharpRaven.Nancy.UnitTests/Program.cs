@@ -28,23 +28,25 @@
 
 #endregion
 
-using System;
 
-using Nancy.Hosting.Self;
+using System;
 
 namespace SharpRaven.Nancy.UnitTests
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        private static void Main(params string[] args)
         {
-            using (var host = new NancyHost(new Uri("http://localhost:3579")))
+#if !net35 && !net40
+            using (var host = new global::Nancy.Hosting.Self.NancyHost(new Uri("http://localhost:3579")))
             {
                 host.Start();
 
                 Console.WriteLine("Nancy is up and runnig. Press any key to exit.");
                 Console.ReadLine();
             }
+#endif
         }
     }
 }
+

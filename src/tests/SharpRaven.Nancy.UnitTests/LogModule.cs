@@ -28,6 +28,11 @@
 
 #endregion
 
+#if !net35
+
+using System.Threading;
+using System.Threading.Tasks;
+
 using Nancy;
 
 #pragma warning disable 618
@@ -36,34 +41,35 @@ namespace SharpRaven.Nancy.UnitTests
 {
     public class LogModule : NancyModule
     {
+        private readonly IRavenClient ravenClient;
+
+
         public LogModule(IRavenClient ravenClient)
         {
-            Get["/log"] = _ =>
-            {
-                var messageId = ravenClient.CaptureMessage("Hello world !!!");
-                return View["log.html", new { MessageId = messageId }];
-            };
+            this.ravenClient = ravenClient;
 
-            Get["/log-async",
-#if !net35
-                true
-#else
-                false
-#endif
-                ] =
-#if !net35
-                async
-#endif
-                    (_, token) =>
-                    {
-#if !net40 && !net35
-                        var messageId = await ravenClient.CaptureMessageAsync("Hello world!!!").ConfigureAwait(false);
-#else
-                        var messageId = ravenClient.CaptureMessage("Hello world!!!");
-#endif
+            Get["/log"] = Log;
+            Get["/log-async", true] = LogAsync;
+        }
 
-                        return View["log.html", new { MessageId = messageId }];
-                    };
+
+        private object Log(object parameters)
+        {
+            var messageId = this.ravenClient.CaptureMessage("Hello world !!!");
+            return View["log.html", new { MessageId = messageId }];
+        }
+
+
+        private async Task<object> LogAsync(object parameters, CancellationToken ct)
+        {
+#if !net40
+            var messageId = await this.ravenClient.CaptureMessageAsync("Hello world!!!").ConfigureAwait(false);
+#else
+            var messageId = this.ravenClient.CaptureMessage("Hello world!!!");
+#endif
+            return View["log.html", new { MessageId = messageId }];
         }
     }
 }
+
+#endif

@@ -28,6 +28,8 @@
 
 #endregion
 
+#if !net35
+
 using Nancy.Testing;
 
 using NUnit.Framework;
@@ -69,3 +71,5 @@ namespace SharpRaven.Nancy.UnitTests
         }
     }
 }
+
+#endif
