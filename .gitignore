@@ -15,5 +15,6 @@ obj/
 docs/_build
 .vs
 artifacts/
+build/
 tools/
 !tools/packages.config
