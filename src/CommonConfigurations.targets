@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configurations>Debug-net35;Release-net35;Debug-net40;Release-net40;Debug-net45;Release-net45</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug-net35' or '$(Configuration)' == 'Release-net35'">
+    <TargetFramework>net35</TargetFramework>
+    <DefineConstants>$(DefineConstants);net35</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug-net40' or '$(Configuration)' == 'Release-net40'">
+    <TargetFramework>net40</TargetFramework>
+    <DefineConstants>$(DefineConstants);net40</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug-net45' or '$(Configuration)' == 'Release-net45'">
+    <TargetFramework>net45</TargetFramework>
+    <DefineConstants>$(DefineConstants);net45</DefineConstants>
+  </PropertyGroup>
+</Project>
